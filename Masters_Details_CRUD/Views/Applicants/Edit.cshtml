@@ -1,0 +1,134 @@
+﻿@model ApplicantEditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="row">
+    <div class="col-12">
+        <form asp-action="Edit" asp-controller="Applicants" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="ApplicantId" />
+            <div class="form-group row mb-1">
+                <label asp-for="ApplicantName" class="col-form-label col-form-label-sm col-2 text-end"></label>
+                <div class="col-6">
+                    <input type="text" asp-for="ApplicantName" class="form-control form-control-sm" />
+                    <span asp-validation-for="ApplicantName" class="text-danger" style="font-size:small" />
+                </div>
+            </div>
+           
+            <div class="form-group row mb-1">
+                <label asp-for="BirthDate" class="col-form-label col-form-label-sm col-2 text-end"></label>
+                <div class="col-6">
+                    <input type="text" asp-for="BirthDate" class="form-control form-control-sm" />
+                    <span asp-validation-for="BirthDate" class="text-danger" style="font-size:small" />
+                </div>
+            </div>
+            <div class="form-group row mb-1">
+                <label asp-for="Gender" class="col-form-label col-form-label-sm col-2 text-end"></label>
+                <div class="col-6">
+                    <select type="text" asp-for="Gender" class="form-select form-select-sm"
+                            asp-items="Html.GetEnumSelectList<Gender>()">
+                        <option value="" selected>Choose one</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger" style="font-size:small" />
+                </div>
+            </div>
+            <div class="form-group row mb-1">
+                <label asp-for="AppliedFor" class="col-form-label col-form-label-sm col-2 text-end"></label>
+                <div class="col-6">
+                    <select asp-for="AppliedFor" class="form-select form-select-sm">
+                        <option>Sales exective</option>
+                        <option>Area manager</option>
+                        <option>Zone manager</option>
+                        <option>Promotion officer</option>
+
+                    </select>
+                    <span asp-validation-for="AppliedFor" class="text-danger" style="font-size:small" />
+                </div>
+            </div>
+            <div class="form-group row mb-1">
+
+                <div class="col-6 offset-2">
+                    <div class="form-check">
+                        <input type="checkbox" asp-for="IsReadyToWork">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Ready to work anywhere in country
+                        </label>
+                    </div>
+                    <span asp-validation-for="IsReadyToWork" class="text-danger" style="font-size:small" />
+                </div>
+            </div>
+            <div class="form-group row mb-1">
+                <div class="col-10">
+                    <h4>Qualifications</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Degree</th>
+                                <th>Institute</th>
+                                <th>Passing Year</th>
+                                <th>Result</th>
+                                <th>
+                                    <button type="submit" formnovalidate name="act" value="add" class="btn btn-sm btn-secondary">Add</button>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (var i = 0; i < Model.Qualifications.Count; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <input asp-for="@Model.Qualifications[i].Degree" class="form-control form-control-sm" />
+                                        <span asp-validation-for="@Model.Qualifications[i].Degree" class="text-danger" style="font-size:small" />
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.Qualifications[i].Institute" class="form-control form-control-sm" />
+                                        <span asp-validation-for="@Model.Qualifications[i].Institute" class="text-danger" style="font-size:small" />
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.Qualifications[i].PassingYear" class="form-control form-control-sm" />
+                                        <span asp-validation-for="@Model.Qualifications[i].PassingYear" class="text-danger" style="font-size:small" />
+                                    </td>
+                                    <td>
+                                        <input asp-for="@Model.Qualifications[i].Result" class="form-control form-control-sm" />
+                                        <span asp-validation-for="@Model.Qualifications[i].Result" class="text-danger" style="font-size:small" />
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-danger btn-sm" formnovalidate name="act" value="remove_@i">Del</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group row mb-1">
+                <div class="col-10">
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-secondary"><a asp-action="Index" asp-controller="Applicants" style="color:white; text-decoration:none;">Back to Home</a></button>
+
+                        <button type="submit" class="btn btn-primary" name="act" value="update">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Styles
+{
+    <link href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+
+}
+@section Scripts
+{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script>
+        $("#BirthDate").datepicker({
+            format: 'yyyy-mm-dd'
+        });
+    </script>
+
+}

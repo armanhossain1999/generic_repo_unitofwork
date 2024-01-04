@@ -1,0 +1,112 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@model IEnumerable<Applicant>
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="row">
+    <div class="col-12">
+        <h3>Employee List</h3>
+        <div class="d-flex justify-content-end mb-1">
+            <a href="@Url.Action("Create", "Applicants")" class="btn btn-primary btn-sm">Create New</a>
+        </div>
+        <table class="table table-bordered table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th><i class="bi bi-chevron-bar-expand"></i></th>
+                    <th>Applicant Name</th>
+                    <th>Birth Date</th>
+                    <th>Gender</th>
+                    <th>Applied For</th>
+                    <th>Ready to work anywhere?</th>
+                    <th>Edit/Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var a in Model)
+                {
+                    <tr style="vertical-align:middle">
+                        <td class="text-center" style="width:50px">
+                            <button type="button" class="btn btn-light btn-sm show-q"><i class="bi bi-chevron-right"></i></button>
+                            <button type="button" class="btn btn-light btn-sm hide-q" style="display:none"><i class="bi bi-chevron-down"></i></button>
+                        </td>
+                        <td>@a.ApplicantName</td>
+                        <td>@a.BirthDate.ToString("yyyy-MM-dd")</td>
+                        <td>@a.Gender</td>
+                        <td>@a.AppliedFor</td>
+                        <td>@(a.IsReadyToWork ? "Yes" : "No")</td>
+                        <td>
+                             <a href="@Url.Action("Edit", "Applicants", new {id=a.ApplicantId})" class="btn btn-success btn-sm">Edit</a>
+                            <a href="@Url.Action("Delete", "Applicants", new {id=a.ApplicantId})" class="btn btn-danger btn-sm del">Delete</a>
+                         </td>
+                    </tr>
+                    <tr style="display:none">
+   
+                        <td colspan="7">
+                            <h4>Qualifications</h4>
+                          <div style="max-height:150px; overflow-y:auto;">
+                                <table class="table table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Degree</th>
+                                            <th>Institute</th>
+                                            <th>Passing year</th>
+                                            <th>Result</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var q in a.Qualifications)
+                                        {
+                                            <tr>
+                                                <td>@q.Degree</td>
+                                                <td>@q.Institute</td>
+                                                <td>@q.PassingYear</td>
+                                                <td>@q.Result</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                          </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    @*     //pagelist *@
+        <div class="d-flex justify-content-end">
+            @Html.PagedListPager((IPagedList)Model, pg => Url.Action("Index", new { pg }), new PagedListRenderOptions
+       {
+           UlElementClasses = new string[] { "pagination", "pagination-sm" },
+           LiElementClasses = new string[] { "page-item" },
+           PageClasses = new string[] { "page-link" },
+           DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+           DisplayLinkToNextPage = PagedListDisplayMode.Always
+
+       })
+        </div>
+    </div>
+</div>
+
+@section styles
+{
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+}
+@section scripts
+{
+
+    <script src="~/libs/jquery/jquery.js"></script>
+    <script>
+        $(".show-q").click(function () {
+            $(this).closest("tr").next().toggle();
+            $(this).toggle();
+            $(this).next().toggle();
+        });
+        $(".hide-q").click(function () {
+            $(this).closest("tr").next().toggle();
+            $(this).toggle();
+            $(this).prev().toggle();
+        });
+    </script>
+}
